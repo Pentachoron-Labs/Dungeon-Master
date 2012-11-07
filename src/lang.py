@@ -4,14 +4,13 @@ import os
 langs = {}
 curr = 'en_us' #by default. TODO: load from a config. (TODO: write a config, but we can reuse some of this script.)
 supported = {'English (American)':'en_us',
-	'Latin (Classical)':'la_cl'}
+	'Latina (Classical)':'la_cl'}
 
 def load(langname):
 	'''Loads a lang file.'''
 	global langs
 	langs[langname] = {}
-	print os.listdir('resources')
-	x = open('resources/lang/%s.lang' %langname)
+	x = open('rsc/lang/%s.lang' %langname)
 	y = 'spam'
 	while True:
 		y = x.readline()
