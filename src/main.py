@@ -23,12 +23,20 @@ class win(object):
 	
 	def opennewgame(self):
 		'''Open new game menu.'''
-		self.btnstart.hide()
-		self.btnoptions.hide()
+		self.hideall()
+		#TODO: probably add an intermediary screen
+		self.startnewgame()
 
 	def openoptions(self):
 		'''Open options menu.'''
+		self.hideall()
+
+	def hideall(self):
 		self.btnstart.hide()
 		self.btnoptions.hide()
+	
+	#### Game screen shtuff ####
+	def startnewgame(self):
+		self.hideall()
 		
 window = win()
