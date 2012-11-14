@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from PyQt4.Qt import QString #And here I am breaking my own rule, but we only need the one class from such a huge library.
 
 langs = {}
 curr = 'en_us' #by default. TODO: load from a config. (TODO: write a config, but we can reuse some of this script.)
@@ -23,8 +24,8 @@ def load(langname):
 			break
 		if y[-1] == '\n': y = y[:-1]
 		if y[-1] == '\r': y = y[:-1]
-		key = y.split('\t')[0].replace('\\t','\t').replace('\\n','\n').replace('\\\\','\\')
-		text = y.split('\t')[1].replace('\\t','\t').replace('\\n','\n').replace('\\\\','\\')
+		key = unicode(y.split('\t')[0].replace('\\t','\t').replace('\\n','\n').replace('\\\\','\\'),'utf-8')
+		text = unicode(y.split('\t')[1].replace('\\t','\t').replace('\\n','\n').replace('\\\\','\\'),'utf-8')
 		langs[langname][key] = text
 
 def lang(key):
@@ -46,3 +47,7 @@ def lang(key):
 		elif e.message == key: print 'Key %s not defined for language %s. Update the lang file!' %(key,curr)
 		else: raise
 		return ''
+
+def qlang(key):
+	'''Returns QString(lang(key)). Just a shortcut function to save space.'''
+	return QString(lang(key))

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import PyQt4.Qt as q
 import so
+q = so.q
 
 class widget(q.QWidget):
 	
@@ -13,9 +13,20 @@ class imglabel(q.QLabel):
 		super(imglabel,self).__init__(parent)
 
 	def mousePressEvent(self, e):
-		self.obj = so.objs[so.selectedobject]
-		self.setPixmap(self.obj.pixmap)
-		print self.obj
+		if so.objs[self.obj].canbereplaced(so.selectedobject) and \
+		   so.objs[so.selectedobject].canreplace(self.obj):
+			self.setobj(so.selectedobject)
 		e.accept()
+	
+	def enterEvent(self, e):
+		self.setStyleSheet('QLabel{border: 1px solid black;}')
+		e.accept()
+	
+	def leaveEvent(self, e):
+		self.setStyleSheet('')
+
+	def setobj(self, id):
+		self.obj = id
+		self.setPixmap(so.objs[self.obj].pixmap)
 
 class listwidget(q.QListWidget): pass

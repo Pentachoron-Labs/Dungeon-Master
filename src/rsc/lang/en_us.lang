@@ -10,3 +10,7 @@
 gui.newgame	New Game
 gui.options	Options
 gui.title	Dungeon Master
+
+object.blank	Remove Space
+object.example	Ëẍäḿṕĺë
+object.empty	Add Space
