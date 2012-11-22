@@ -9,8 +9,9 @@ class widget(q.QWidget):
 
 class imglabel(q.QLabel):
 	
-	def __init__(self, parent=None):
+	def __init__(self, pos, parent=None):
 		super(imglabel,self).__init__(parent)
+		self.pos = pos
 
 	def mousePressEvent(self, e):
 		if so.objs[self.obj].canbereplaced(so.selectedobject) and \
@@ -28,5 +29,6 @@ class imglabel(q.QLabel):
 	def setobj(self, id):
 		self.obj = id
 		self.setPixmap(so.objs[self.obj].pixmap)
+		so.grid[self.pos[1]][self.pos[0]] = self.obj
 
 class listwidget(q.QListWidget): pass

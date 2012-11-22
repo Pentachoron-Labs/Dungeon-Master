@@ -10,7 +10,9 @@
 gui.newgame	New Game
 gui.options	Options
 gui.title	Dungeon Master
+gui.groupbox	
+gui.gobutton	Start Round
 
 object.blank	Remove Space
-object.example	Ëẍäḿṕĺë
 object.empty	Add Space
+object.entrance	Dungeon Entrance

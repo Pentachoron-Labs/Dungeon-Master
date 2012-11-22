@@ -25,7 +25,7 @@ class win(object):
 		self.scrollpane = dgc.listwidget(self.widget)
 		self.scrollpane.hide()
 		self.scrollpane.move(400,0)
-		self.scrollpane.resize(200,400)
+		self.scrollpane.resize(200,200)
 		self.scrollpane.setSelectionMode(1)
 		so.selectedobject = 'empty'
 		self.widget.connect(self.scrollpane,q.SIGNAL('itemSelectionChanged()'),self.updateselection)
@@ -37,6 +37,18 @@ class win(object):
 				x.widgetitem.obj = i
 				if i == 'empty': x.widgetitem.setSelected(True)
 		self.populatedungeongui()
+		#Game-screen shtuffs
+		self.gamebox = q.QGroupBox(qlang('gui.groupbox'),self.widget)
+		self.gamebox.hide()
+		self.gamebox.move(400,200)
+		self.gamebox.resize(200,200)
+		self.btngo = q.QPushButton(qlang('gui.gobutton'),self.gamebox)
+		self.btngo.hide()
+		self.btngo.move(420,220)
+		self.widget.connect(self.btngo,q.SIGNAL('clicked()'),self.startround)
+		self.gblayout = q.QVBoxLayout(self.widget)
+		self.gblayout.addWidget(self.btngo)
+		self.gamebox.setLayout(self.gblayout)
 		app.exec_()
 	
 	def opennewgame(self):
@@ -57,12 +69,14 @@ class win(object):
 	def startnewgame(self):
 		self.hideall()
 		self.scrollpane.show()
+		self.gamebox.show()
+		self.btngo.show()
 		for i in self.grid: i.show()
-	
+		
 	def populatedungeongui(self):
 		self.grid = []
 		for i in range(400):
-			x = dgc.imglabel(self.widget)
+			x = dgc.imglabel((i%20,i/20),self.widget)
 			x.setobj('blank')
 			x.hide()
 			x.move((i%20)*20,(i/20)*20)
@@ -73,5 +87,8 @@ class win(object):
 	
 	def updateselection(self):
 		so.selectedobject = self.scrollpane.selectedItems()[0].obj
+
+	def startround(self):
+		print so.getpath(so.grid)
 
 window = win()

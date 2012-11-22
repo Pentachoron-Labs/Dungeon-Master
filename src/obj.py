@@ -4,7 +4,7 @@ from lang import lang,qlang
 q = so.q
 class gameobj(object):
 	'''Base class for game objects.'''
-	def __init__(self,id,haswidgetitem=True,cost=0):
+	def __init__(self,id,haswidgetitem=True,cost=0,issolid=False):
 		'''Super this!'''
 		self.id = id
 		if haswidgetitem:
@@ -12,6 +12,7 @@ class gameobj(object):
 		self.pixmap = q.QPixmap('rsc/img/%s.gif' %id)
 		self.haswidgetitem = haswidgetitem
 		self.cost = cost
+		self.issolid = issolid
 		
 	def __str__(self):
 		return 'Game object "%s" at %d' %(self.id, id(self))
@@ -29,7 +30,7 @@ class gameobj(object):
 class blank(gameobj):
 
 	def __init__(self):
-		super(blank,self).__init__('blank')
+		super(blank,self).__init__('blank',issolid=True)
 		self.icon = None
 
 class empty(gameobj):
@@ -45,3 +46,8 @@ class goal(gameobj):
 
 	def canbereplaced(self,id):
 		return False
+
+class entrance(gameobj):
+
+	def __init__(self):
+		super(entrance,self).__init__('entrance',cost=10)
