@@ -8,15 +8,15 @@
 #Feel free to add comments IF they take up the entire line. Comments cannot take the same line as an entry, and the hash (#) MUST be the first character in the line.
 
 #This entry is REQUIRED!
-lang.name	English
+lang.name	LATINA
 
-gui.newgame	New Game
-gui.options	Options
-gui.title	Dungeon Master
+gui.newgame	LVDVS NOVVS
+gui.options	OPTIÓNÉS
+gui.title	DOMINVS CARCERIS
 gui.groupbox	
-gui.gobutton	Start Round
-gui.exitbutton	Exit Game
+gui.gobutton	INCIPE
+gui.exitbutton	EXE LVDVS
 
-object.blank	Remove Space
-object.empty	Add Space
-object.entrance	Dungeon Entrance
+object.blank	MV́RVS CARCERIS
+object.empty	ÁREA
+object.entrance	IANVA CARCERIS

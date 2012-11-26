@@ -44,10 +44,13 @@ class win(object):
 		self.gamebox.resize(200,200)
 		self.btngo = q.QPushButton(qlang('gui.gobutton'),self.gamebox)
 		self.btngo.hide()
-		self.btngo.move(420,220)
+		self.btnexit = q.QPushButton(qlang('gui.exitbutton'),self.gamebox)
+		self.btnexit.hide()
 		self.widget.connect(self.btngo,q.SIGNAL('clicked()'),self.startround)
+		self.widget.connect(self.btnexit,q.SIGNAL('clicked()'),self.exitgame)
 		self.gblayout = q.QVBoxLayout(self.widget)
 		self.gblayout.addWidget(self.btngo)
+		self.gblayout.addWidget(self.btnexit)
 		self.gamebox.setLayout(self.gblayout)
 		app.exec_()
 	
@@ -64,6 +67,11 @@ class win(object):
 	def hideall(self):
 		self.btnstart.hide()
 		self.btnoptions.hide()
+		self.scrollpane.hide()
+		self.gamebox.hide()
+		self.btngo.hide()
+		self.btnexit.hide()
+		for i in self.grid: i.hide()
 	
 	#### Game screen shtuff ####
 	def startnewgame(self):
@@ -71,6 +79,7 @@ class win(object):
 		self.scrollpane.show()
 		self.gamebox.show()
 		self.btngo.show()
+		self.btnexit.show()
 		for i in self.grid: i.show()
 		
 	def populatedungeongui(self):
@@ -90,5 +99,14 @@ class win(object):
 
 	def startround(self):
 		print so.getpath(so.grid)
+
+	def exitgame(self):
+		#Todo: confirmation dialog.
+		self.hideall()
+		self.openmain()
+
+	def openmain(self):
+		self.btnstart.show()
+		self.btnoptions.show()
 
 window = win()

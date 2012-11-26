@@ -4,8 +4,7 @@ from PyQt4.Qt import QString #And here I am breaking my own rule, but we only ne
 
 langs = {}
 curr = 'en_us' #by default. TODO: load from a config. (TODO: write a config, but we can reuse some of this script.)
-supported = {'English (American)':'en_us',
-	'Latina (Classical)':'la_cl'}
+supported = {}
 
 def load(langname):
 	'''Loads a lang file.'''
@@ -21,12 +20,19 @@ def load(langname):
 		if len(y.split('\t')) != 2:
 			print 'Error: Corrupted lang file %s. Contact developers!' %langname
 			print 'Faulty line:',repr(y)
-			break
+			return False
 		if y[-1] == '\n': y = y[:-1]
 		if y[-1] == '\r': y = y[:-1]
 		key = unicode(y.split('\t')[0].replace('\\t','\t').replace('\\n','\n').replace('\\\\','\\'),'utf-8')
 		text = unicode(y.split('\t')[1].replace('\\t','\t').replace('\\n','\n').replace('\\\\','\\'),'utf-8')
 		langs[langname][key] = text
+	return True
+
+for i in os.listdir('rsc/lang'):
+	if i[-5:] == '.lang':
+		if load(i[:-5]):
+			supported[i[:-5]] = langs[i[:-5]]['lang.name']
+print supported
 
 def lang(key):
 	'''Gets the text from the currently loaded language for a certain key.
