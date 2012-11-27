@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from lang import lang,qlang
+import lang as lang_
 import dgc,so
 q = so.q #Better than loading the same library three times... or ten.
 
@@ -52,6 +53,11 @@ class win(object):
 		self.gblayout.addWidget(self.btngo)
 		self.gblayout.addWidget(self.btnexit)
 		self.gamebox.setLayout(self.gblayout)
+		self.langbox = q.QComboBox(self.widget)
+		self.langbox.hide()
+		self.langbox.addItems(lang_.supported.keys())
+		self.langbox.move(300-(self.langbox.width()/2),50)
+		self.widget.connect(self.langbox,q.SIGNAL('activated(QString)'),self.changelang)
 		app.exec_()
 	
 	def opennewgame(self):
@@ -63,6 +69,7 @@ class win(object):
 	def openoptions(self):
 		'''Open options menu.'''
 		self.hideall()
+		self.langbox.show()
 
 	def hideall(self):
 		self.btnstart.hide()
@@ -72,6 +79,7 @@ class win(object):
 		self.btngo.hide()
 		self.btnexit.hide()
 		for i in self.grid: i.hide()
+		self.langbox.hide()
 	
 	#### Game screen shtuff ####
 	def startnewgame(self):
@@ -108,5 +116,8 @@ class win(object):
 	def openmain(self):
 		self.btnstart.show()
 		self.btnoptions.show()
+
+	def changelang(self):
+		print self.langbox.currentText()
 
 window = win()
