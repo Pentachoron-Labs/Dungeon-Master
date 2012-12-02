@@ -58,6 +58,7 @@ class win(object):
 		self.langbox.addItems(lang_.supported.keys())
 		self.langbox.move(300-(self.langbox.width()/2),50)
 		self.widget.connect(self.langbox,q.SIGNAL('activated(QString)'),self.changelang)
+#		self.textobjs = [self.widget,self.btnstart,self.btnoptions,
 		app.exec_()
 	
 	def opennewgame(self):
