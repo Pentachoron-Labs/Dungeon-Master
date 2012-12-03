@@ -9,16 +9,15 @@ class win(object):
 	def __init__(self):
 		app = q.QApplication([])
 		so.init()
-		self.widget = dgc.widget()
-		self.widget.setWindowTitle(qlang('gui.title'))
+		self.widget = dgc.widget('gui.title')
 		self.widget.setWindowIcon(q.QIcon('rsc/icon.png'))
 		self.widget.resize(600,400)
 		self.widget.show()
-		self.btnstart = q.QPushButton(qlang('gui.newgame'),self.widget)
+		self.btnstart = dgc.button('gui.newgame',self.widget)
 		self.btnstart.show()
 		self.btnstart.move(300-(self.btnstart.width()/2),50)
 		self.widget.connect(self.btnstart,q.SIGNAL('clicked()'),self.opennewgame)
-		self.btnoptions = q.QPushButton(qlang('gui.options'),self.widget)
+		self.btnoptions = dgc.button('gui.options',self.widget)
 		self.btnoptions.show()
 		self.btnoptions.move(300-(self.btnoptions.width()/2), 100)
 		self.widget.connect(self.btnoptions,q.SIGNAL('clicked()'),self.openoptions)
@@ -33,19 +32,18 @@ class win(object):
 		for i in so.objs:
 			x = so.objs[i]
 			if x.haswidgetitem:
-				x.widgetitem = q.QListWidgetItem(qlang('object.%s'%i),self.scrollpane)
+				x.widgetitem = dgc.lwitem('object.%s'%i,i,self.scrollpane)
 				if x.icon: x.widgetitem.setIcon(x.icon)
-				x.widgetitem.obj = i
 				if i == 'empty': x.widgetitem.setSelected(True)
 		self.populatedungeongui()
 		#Game-screen shtuffs
-		self.gamebox = q.QGroupBox(qlang('gui.groupbox'),self.widget)
+		self.gamebox = dgc.groupbox('gui.groupbox',self.widget)
 		self.gamebox.hide()
 		self.gamebox.move(400,200)
 		self.gamebox.resize(200,200)
-		self.btngo = q.QPushButton(qlang('gui.gobutton'),self.gamebox)
+		self.btngo = dgc.button('gui.gobutton',self.gamebox)
 		self.btngo.hide()
-		self.btnexit = q.QPushButton(qlang('gui.exitbutton'),self.gamebox)
+		self.btnexit = dgc.button('gui.exitbutton',self.gamebox)
 		self.btnexit.hide()
 		self.widget.connect(self.btngo,q.SIGNAL('clicked()'),self.startround)
 		self.widget.connect(self.btnexit,q.SIGNAL('clicked()'),self.exitgame)
@@ -58,7 +56,11 @@ class win(object):
 		self.langbox.addItems(lang_.supported.keys())
 		self.langbox.move(300-(self.langbox.width()/2),50)
 		self.widget.connect(self.langbox,q.SIGNAL('activated(QString)'),self.changelang)
-#		self.textobjs = [self.widget,self.btnstart,self.btnoptions,
+		self.btnback = dgc.button('gui.exitbutton',self.widget)
+		self.btnback.hide()
+		self.btnback.move(300-(self.btnexit.width()/2),350)
+		self.widget.connect(self.btnback,q.SIGNAL('clicked()'),self.exitgame)
+#		self.textobjs = [self.widget,self.btnstart,self.btnoptions,self.gamebox,self.btngo,self.btnexit] + [so.objs[i].widgetitem for i in so.objs.keys() if so.objs[i].haswidgetitem]
 		app.exec_()
 	
 	def opennewgame(self):
@@ -71,6 +73,7 @@ class win(object):
 		'''Open options menu.'''
 		self.hideall()
 		self.langbox.show()
+		self.btnback.show()
 
 	def hideall(self):
 		self.btnstart.hide()
@@ -81,6 +84,8 @@ class win(object):
 		self.btnexit.hide()
 		for i in self.grid: i.hide()
 		self.langbox.hide()
+		self.btnexit.hide()
+		self.btnback.hide()
 	
 	#### Game screen shtuff ####
 	def startnewgame(self):
@@ -119,6 +124,7 @@ class win(object):
 		self.btnoptions.show()
 
 	def changelang(self):
-		print self.langbox.currentText()
+		lang_.curr = unicode(self.langbox.currentText())
+		for i in dgc.textobjs: i.updatetext()
 
 window = win()
