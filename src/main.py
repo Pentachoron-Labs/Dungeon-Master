@@ -60,7 +60,6 @@ class win(object):
 		self.btnback.hide()
 		self.btnback.move(300-(self.btnexit.width()/2),350)
 		self.widget.connect(self.btnback,q.SIGNAL('clicked()'),self.exitgame)
-#		self.textobjs = [self.widget,self.btnstart,self.btnoptions,self.gamebox,self.btngo,self.btnexit] + [so.objs[i].widgetitem for i in so.objs.keys() if so.objs[i].haswidgetitem]
 		app.exec_()
 	
 	def opennewgame(self):
@@ -98,21 +97,23 @@ class win(object):
 		
 	def populatedungeongui(self):
 		self.grid = []
+		so.imggrid = self.grid
 		for i in range(400):
-			x = dgc.imglabel((i%20,i/20),self.widget)
-			x.setobj('blank')
+			x = dgc.imglabel(i%20,i/20,self.widget)
 			x.hide()
 			x.move((i%20)*20,(i/20)*20)
 			x.setScaledContents(True)
 			x.resize(20,20)
 			self.grid.append(x)
-		self.grid[[189,190,209,210][so.random.randrange(4)]].setobj('goal')
+			so.setobj(i%20,i/20,'blank')
+		so.setobj(9+(so.random.random()>.5),9+(so.random.random()>.5),'goal')
 	
 	def updateselection(self):
-		so.selectedobject = self.scrollpane.selectedItems()[0].obj
+		so.selectedobject = so.objs[self.scrollpane.selectedItems()[0].obj](-1,-1)
 
 	def startround(self):
-		print so.getpath(so.grid)
+		path,options,marked = so.getpath(so.grid) #although I don't think I'll need any of them… yet.
+		ec = so.entrancecoords
 
 	def exitgame(self):
 		#Todo: confirmation dialog.

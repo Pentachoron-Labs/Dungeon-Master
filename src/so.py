@@ -10,6 +10,10 @@ objmods = []
 objs = {}
 '''Grid (the current game grid) of obj IDs.'''
 grid = []
+'''Image grid (reference to main.grid)'''
+imggrid = []
+'''Coordinates of the dungeon entrance (there can be only one.)'''
+entrancecoords = None
 def init():
 	#Load object modules
 	global objmods
@@ -28,7 +32,7 @@ def init():
 		if y[-1] == '\n': y = y[:-1]
 		if y[-1] == '\r': y = y[:-1]
 		z = findobjclass(y)
-		if z: objs[y] = z()
+		if z: objs[y] = z
 	#Init grid
 	for i in range(20):
 		grid.append([])
@@ -61,8 +65,8 @@ def getpath(grid):
 	#Find the walls and the goal simultaneously.
 	for i in range(len(grid)):
 		for j in range(len(grid[0])):
-			if objs[grid[i][j]].issolid: marked[i][j] = 2
-			if grid[i][j] == 'goal': goal = (j,i)
+			if grid[i][j].issolid: marked[i][j] = 2
+			if grid[i][j].ID == 'goal': goal = (j,i)
 	#Find the entrance point
 	if 'entrance' in grid[0]: path.append((grid[0].index('entrance'),0))
 	elif 'entrance' in grid[-1]: path.append((grid[0].index('entrance'),len(grid)-1))
@@ -74,12 +78,11 @@ def getpath(grid):
 			elif grid[i][-1] == 'entrance':
 				path.append((len(grid[0]),i))
 				break
-	if len(path) == 0: return None
+	if len(path) == 0: return None,None,None
 	marked[path[0][1]][path[0][0]] = 1
 	while path[-1] != goal:
-		print path[-1]
 		path, options, marked = _step(path, options, marked)
-		if not path: return None
+		if not path: return None,None,None
 	return path, options, marked
 
 def _step(path, options, marked):
@@ -98,5 +101,9 @@ def _step(path, options, marked):
 		path.append(new.pop(0))
 		options.extend(new)
 	marked[path[-1][1]][path[-1][0]] = 1
-#	for i in marked: print i
 	return path,options,marked
+
+def setobj(x,y,obj):
+	'''Sets object at (x,y) to a new instance of the specified object ID.'''
+	grid[y][x] = objs[obj](x,y)
+	imggrid[(y*20)+x].setPixmap(objs[obj].pixmap)

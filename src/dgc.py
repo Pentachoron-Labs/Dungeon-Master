@@ -22,14 +22,15 @@ class widget(q.QWidget):
 
 class imglabel(q.QLabel):
 	
-	def __init__(self, pos, parent=None):
+	def __init__(self, x, y, parent=None):
 		super(imglabel,self).__init__(parent)
-		self.pos = pos
+		self.X = x
+		self.Y = y
 
 	def mousePressEvent(self, e):
-		if so.objs[self.obj].canbereplaced(so.selectedobject) and \
-		   so.objs[so.selectedobject].canreplace(self.obj):
-			self.setobj(so.selectedobject)
+		if so.grid[self.Y][self.X].canbereplaced(so.selectedobject.ID) and \
+		   so.selectedobject.canreplace(self.X,self.Y):
+			so.setobj(self.X,self.Y,so.selectedobject.ID)
 		e.accept()
 	
 	def enterEvent(self, e):
@@ -38,11 +39,6 @@ class imglabel(q.QLabel):
 	
 	def leaveEvent(self, e):
 		self.setStyleSheet('')
-
-	def setobj(self, id):
-		self.obj = id
-		self.setPixmap(so.objs[self.obj].pixmap)
-		so.grid[self.pos[1]][self.pos[0]] = self.obj
 
 class listwidget(q.QListWidget): pass
 

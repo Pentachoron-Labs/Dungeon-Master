@@ -4,50 +4,60 @@ from lang import lang,qlang
 q = so.q
 class gameobj(object):
 	'''Base class for game objects.'''
-	def __init__(self,id,haswidgetitem=True,cost=0,issolid=False):
+	ID = None
+	pixmap = q.QPixmap('')
+	icon = None
+	haswidgetitem = True
+	cost = 0
+	issolid = False
+	def __init__(self,x,y):
 		'''Super this!'''
-		self.id = id
-		if haswidgetitem:
-			self.icon = q.QIcon('rsc/img/%s.gif' %id)
-		self.pixmap = q.QPixmap('rsc/img/%s.gif' %id)
-		self.haswidgetitem = haswidgetitem
-		self.cost = cost
-		self.issolid = issolid
+		self.x = x
+		self.y = y
 		
 	def __str__(self):
 		return 'Game object "%s" at %d' %(self.id, id(self))
 
 	def canbereplaced(self,id):
 		'''Called to check if this object can be replaced with the selected object.
-		id is the string ID of the selected object.'''
+		id is the string ID of the selected object. Also functions as a
+		pre-replacement hook.'''
 		return True
 
-	def canreplace(self,id):
+	def canreplace(self,x,y):
 		'''Called to check if this object can replace the selected tile.
-		id is the string ID of the tile's object.'''
+		id is the string ID of the tile's object. Also functions as a
+		pre-replacement hook.'''
 		return True
 
 class blank(gameobj):
-
-	def __init__(self):
-		super(blank,self).__init__('blank',issolid=True)
-		self.icon = None
+	'''Dungeon wall.'''
+	ID = 'blank'
+	pixmap = q.QPixmap('rsc/img/blank.gif')
+	icon = q.QIcon('rsc/img/blank.gif')
+	issolid = True
 
 class empty(gameobj):
-
-	def __init__(self):
-		super(empty,self).__init__('empty',cost=10)
-		self.icon = None
+	'''Empty space (costs 10 to remove the wall.)'''
+	ID = 'empty'
+	cost = 10
 
 class goal(gameobj):
-
-	def __init__(self):
-		super(goal,self).__init__('goal',haswidgetitem=False)
+	'''Goal that the players must attempt to reach.'''
+	ID = 'goal'
+	pixmap = q.QPixmap('rsc/img/goal.gif')
+	icon = q.QIcon('rsc/img/goal.gif')
+	haswidgetitem=False
 
 	def canbereplaced(self,id):
 		return False
 
 class entrance(gameobj):
+	ID = 'entrance'
+	cost = 10
 
-	def __init__(self):
-		super(entrance,self).__init__('entrance',cost=10)
+	def canreplace(self,x,y):
+		if (x in [0,19]) == (y in [0,19]): return False
+		if so.entrancecoords: so.setobj(so.entrancecoords[0],so.entrancecoords[1],'blank')
+		so.entrancecoords = (x,y)
+		return True
