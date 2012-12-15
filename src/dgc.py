@@ -40,6 +40,12 @@ class imglabel(q.QLabel):
 	def leaveEvent(self, e):
 		self.setStyleSheet('')
 
+class playerlabel(q.QLabel):
+
+	def __init__(self, player, parent=None):
+		super(playerlabel,self).__init__(parent)
+		self.player = player
+
 class listwidget(q.QListWidget): pass
 
 class lwitem(q.QListWidgetItem):

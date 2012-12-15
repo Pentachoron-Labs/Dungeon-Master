@@ -17,6 +17,9 @@ gui.groupbox
 gui.gobutton	Start Round
 gui.exitbutton	Exit Game
 
+nopath.title	Error
+nopath.text	No path to goal! (Remember, you must have a dungeon entrance on the outside.)
+
 object.blank	Remove Space
 object.empty	Add Space
 object.entrance	Dungeon Entrance

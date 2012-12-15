@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from lang import lang,qlang
 import lang as lang_
-import dgc,so
+import dgc,so,player
 q = so.q #Better than loading the same library three times... or ten.
 
 class win(object):
@@ -113,7 +113,18 @@ class win(object):
 
 	def startround(self):
 		path,options,marked = so.getpath(so.grid) #although I don't think I'll need any of them… yet.
+		if not path:
+			q.QMessageBox.about(self.widget,qlang('nopath.title'),qlang('nopath.text'))
+			return
 		ec = so.entrancecoords
+		party = player.party(ec[0],ec[1])
+		playerpixmap = q.QPixmap('rsc/img/player.gif')
+		party.label = dgc.playerlabel(party,self.widget)
+		party.label.move(ec[0]*20,ec[1]*20)
+		party.label.setScaledContents(True)
+		party.label.resize(20,20)
+		party.label.setPixmap(playerpixmap)
+		party.label.show()
 
 	def exitgame(self):
 		#Todo: confirmation dialog.

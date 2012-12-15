@@ -58,6 +58,7 @@ def getpath(grid):
 	entrance on any side (this function does find it itself) and the goal
 	point. If such a path exists, the function returns the list containing
 	it; if it does not, the function returns None.'''
+	if not entrancecoords: return None,None,None #thereby saving us a lot of trouble
 	path = []
 	options = []
 	#Elements marked 0 are blank, 1 are green, and 2 are walls.
@@ -67,17 +68,7 @@ def getpath(grid):
 		for j in range(len(grid[0])):
 			if grid[i][j].issolid: marked[i][j] = 2
 			if grid[i][j].ID == 'goal': goal = (j,i)
-	#Find the entrance point
-	if 'entrance' in grid[0]: path.append((grid[0].index('entrance'),0))
-	elif 'entrance' in grid[-1]: path.append((grid[0].index('entrance'),len(grid)-1))
-	else:
-		for i in range(len(grid)):
-			if grid[i][0] == 'entrance':
-				path.append((0,i))
-				break
-			elif grid[i][-1] == 'entrance':
-				path.append((len(grid[0]),i))
-				break
+	path.append(entrancecoords)
 	if len(path) == 0: return None,None,None
 	marked[path[0][1]][path[0][0]] = 1
 	while path[-1] != goal:
@@ -87,6 +78,7 @@ def getpath(grid):
 
 def _step(path, options, marked):
 	x,y = path[-1]
+	print x,y
 	new = []
 	if (marked[y-1][x] == 0) and (y > 0): new.append((x,y-1))
 	if (marked[y+1][x] == 0) and ((y+1) < len(marked)): new.append((x,y+1))
