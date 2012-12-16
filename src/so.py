@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''Shared library. Contains several variables used by multiple files.'''
 import PyQt4.Qt as q #Note: Always refer to this instead of importing the same (large) library multiple times.
-import imp,os,sys,random
+import imp,os,sys,random,time
 '''ID of selected object from the scrollpane. Generally, use so.objs[so.selectedobject] for obj data.'''
 selectedobject = None
 '''List of extended object modules.'''
@@ -78,12 +78,11 @@ def getpath(grid):
 
 def _step(path, options, marked):
 	x,y = path[-1]
-	print x,y
 	new = []
-	if (marked[y-1][x] == 0) and (y > 0): new.append((x,y-1))
-	if (marked[y+1][x] == 0) and ((y+1) < len(marked)): new.append((x,y+1))
-	if (marked[y][x-1] == 0) and (x > 0): new.append((x-1,y))
-	if (marked[y][x+1] == 0) and ((x+1) < len(marked[0])): new.append((x+1,y))
+	if (y > 0) and (marked[y-1][x] == 0): new.append((x,y-1))
+	if ((y+1) < len(marked)) and (marked[y+1][x] == 0): new.append((x,y+1))
+	if (x > 0) and (marked[y][x-1] == 0): new.append((x-1,y))
+	if ((x+1) < len(marked[0])) and (marked[y][x+1] == 0): new.append((x+1,y))
 	for i in new:
 		if i in options: new.remove(i)
 	if new == []:

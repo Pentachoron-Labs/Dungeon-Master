@@ -7,7 +7,7 @@ q = so.q #Better than loading the same library three times... or ten.
 class win(object):
 	
 	def __init__(self):
-		app = q.QApplication([])
+		self.app = q.QApplication([])
 		so.init()
 		self.widget = dgc.widget('gui.title')
 		self.widget.setWindowIcon(q.QIcon('rsc/icon.png'))
@@ -60,7 +60,7 @@ class win(object):
 		self.btnback.hide()
 		self.btnback.move(300-(self.btnexit.width()/2),350)
 		self.widget.connect(self.btnback,q.SIGNAL('clicked()'),self.exitgame)
-		app.exec_()
+		self.app.exec_()
 	
 	def opennewgame(self):
 		'''Open new game menu.'''
@@ -125,9 +125,11 @@ class win(object):
 		party.label.resize(20,20)
 		party.label.setPixmap(playerpixmap)
 		party.label.show()
+		while party.active:
+			party.act()
+			self.app.processEvents()
 
 	def exitgame(self):
-		#Todo: confirmation dialog.
 		self.hideall()
 		self.openmain()
 

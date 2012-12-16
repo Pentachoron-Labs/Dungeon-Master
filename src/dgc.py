@@ -20,6 +20,10 @@ class widget(q.QWidget):
 	def updatetext(self):
 		self.setWindowTitle(qlang(self.title))
 
+	def closeEvent(self, event):
+		if q.QMessageBox.question(self,qlang('confirmexit.title'),qlang('confirmexit.text'),q.QMessageBox.StandardButtons(81920),65536) == 16384: event.accept()
+		else: event.ignore()
+
 class imglabel(q.QLabel):
 	
 	def __init__(self, x, y, parent=None):

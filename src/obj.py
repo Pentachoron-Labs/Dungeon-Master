@@ -16,7 +16,7 @@ class gameobj(object):
 		self.y = y
 		
 	def __str__(self):
-		return 'Game object "%s" at %d' %(self.id, id(self))
+		return 'Game object "%s" at %d' %(self.ID, id(self))
 
 	def canbereplaced(self,id):
 		'''Called to check if this object can be replaced with the selected object.
